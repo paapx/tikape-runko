@@ -2,6 +2,7 @@ package tikape.reseptiarkisto;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import spark.ModelAndView;
@@ -72,5 +73,35 @@ public class Main {
 
             return new ModelAndView(map, "raakaAine");
         }, new ThymeleafTemplateEngine());
+        
+        Spark.post("/", (req, res) -> {
+            System.out.println("Hei maailma!");
+            System.out.println("Saatiin: "
+                    + req.queryParams("raakaAine"));
+
+            // avaa yhteys tietokantaan
+            Connection conn = database.getConnection();
+            
+            // tee kysely
+            PreparedStatement stmt
+                    = conn.prepareStatement("INSERT INTO RaakaAine (nimi) VALUES (?)");
+            stmt.setString(1, req.queryParams("raakaAine"));
+
+            stmt.executeUpdate();
+
+            // sulje yhteys tietokantaan
+            conn.close();
+
+            res.redirect("/");
+            return "";
+        });
+        
+        Spark.post("/:raakaAineId/delete", (req, res) -> {
+            
+            raakaAineDao.delete(Integer.parseInt(req.params(":raakaAineId")));
+        
+            res.redirect("/raaka-aineet");
+            return "";
+        });
     }
 }
