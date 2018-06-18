@@ -36,13 +36,13 @@ public class AnnosDao implements Dao<Annos, Integer> {
         Integer id = rs.getInt("id");
         String nimi = rs.getString("nimi");
 
-        Annos o = new Annos(id, nimi);
+        Annos a = new Annos(id, nimi);
 
         rs.close();
         stmt.close();
         connection.close();
 
-        return o;
+        return a;
     }
 
     @Override

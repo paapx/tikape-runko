@@ -10,6 +10,7 @@ import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.reseptiarkisto.database.Database;
 import tikape.reseptiarkisto.database.AnnosDao;
+import tikape.reseptiarkisto.database.RaakaAineDao;
 
 public class Main {
 
@@ -45,6 +46,31 @@ public class Main {
             map.put("annos", annosDao.findOne(Integer.parseInt(req.params("id"))));
 
             return new ModelAndView(map, "annos");
+        }, new ThymeleafTemplateEngine());
+        
+        
+        
+        RaakaAineDao raakaAineDao = new RaakaAineDao(database);
+
+        get("/", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("viesti", ":");
+
+            return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
+
+        get("/raaka-aineet", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("raakaAineet", raakaAineDao.findAll());
+
+            return new ModelAndView(map, "raakaAineet");
+        }, new ThymeleafTemplateEngine());
+
+        get("/raaka-aineet/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("raakaAine", annosDao.findOne(Integer.parseInt(req.params("id"))));
+
+            return new ModelAndView(map, "raakaAine");
         }, new ThymeleafTemplateEngine());
     }
 }
