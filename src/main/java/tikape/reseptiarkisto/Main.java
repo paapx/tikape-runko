@@ -63,7 +63,7 @@ public class Main {
             HashMap map = new HashMap<>();
             map.put("raakaAineet", raakaAineDao.findAll());
 
-            return new ModelAndView(map, "raakaAineet");
+            return new ModelAndView(map, "raaka-aineet");
         }, new ThymeleafTemplateEngine());
 
         get("/raaka-aineet/:id", (req, res) -> {
