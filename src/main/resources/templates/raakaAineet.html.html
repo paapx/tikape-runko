@@ -7,11 +7,11 @@
     </head>
 
     <body>
-        <h1>Annokset:</h1>
+        <h1>Raaka-aineet:</h1>
 
         <ol>
-            <li th:each="annos: ${annokset}">
-                <span th:text="${annos.nimi}">annoksen nimi</span> <a th:href="${'/annokset/' + annos.id}">linkki</a>
+            <li th:each="raakaAine: ${raakaAineet}">
+                <span th:text="${raakaAine.nimi}">raaka-aineen nimi</span> <a th:href="${'/raaka-aineet/' + raakaAine.id}">linkki</a>
             </li>
         </ol>
     </body>
