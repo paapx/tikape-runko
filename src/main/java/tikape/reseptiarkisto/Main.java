@@ -17,7 +17,6 @@ public class Main {
         String dbUrl = System.getenv("JDBC_DATABASE_URL");
         
         Database database = new Database(dbUrl);
-        database.init();
 
         AnnosDao annosDao = new AnnosDao(database);
 
