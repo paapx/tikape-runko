@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import spark.ModelAndView;
+import spark.Spark;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.reseptiarkisto.database.Database;
@@ -13,6 +14,11 @@ import tikape.reseptiarkisto.database.AnnosDao;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        
+        // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
+        if (System.getenv("PORT") != null) {
+            Spark.port(Integer.valueOf(System.getenv("PORT")));
+        }
         
         String dbUrl = System.getenv("JDBC_DATABASE_URL");
         
