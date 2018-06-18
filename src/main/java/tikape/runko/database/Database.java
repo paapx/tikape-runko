@@ -11,9 +11,13 @@ public class Database {
     public Database(String databaseAddress) throws ClassNotFoundException {
         this.databaseAddress = databaseAddress;
     }
-
+    
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(databaseAddress);
+        if (databaseAddress != null && databaseAddress.length() > 0) {
+            return DriverManager.getConnection(databaseAddress);
+        }
+        
+        return DriverManager.getConnection("jdbc:sqlite:reseptiarkisto.db");
     }
 
     public void init() {
@@ -39,10 +43,10 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("CREATE TABLE Opiskelija (id integer PRIMARY KEY, nimi varchar(255));");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Homeros');");
+        lista.add("CREATE TABLE Annos (id integer PRIMARY KEY, nimi varchar(255));");
+        lista.add("INSERT INTO Annos (nimi) VALUES ('Annos1');");
+        lista.add("INSERT INTO Annos (nimi) VALUES ('Annos2');");
+        lista.add("INSERT INTO Annos (nimi) VALUES ('Annos3');");
 
         return lista;
     }
