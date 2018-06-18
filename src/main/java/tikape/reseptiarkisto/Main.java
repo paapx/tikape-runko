@@ -1,4 +1,4 @@
-package tikape.runko;
+package tikape.reseptiarkisto;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,8 +7,8 @@ import java.util.HashMap;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
-import tikape.runko.database.Database;
-import tikape.runko.database.AnnosDao;
+import tikape.reseptiarkisto.database.Database;
+import tikape.reseptiarkisto.database.AnnosDao;
 
 public class Main {
 

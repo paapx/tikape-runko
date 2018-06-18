@@ -1,4 +1,4 @@
-package tikape.runko.domain;
+package tikape.reseptiarkisto.domain;
 
 public class Annos {
 

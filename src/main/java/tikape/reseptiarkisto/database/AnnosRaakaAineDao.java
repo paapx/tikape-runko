@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tikape.runko.domain;
+package tikape.reseptiarkisto.database;
 
 /**
  *
  * @author Pauliina
  */
-public class AnnosRaakaAine {
+public class AnnosRaakaAineDao {
     
 }

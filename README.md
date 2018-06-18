@@ -1,4 +1,4 @@
-# tikape-runko
+# tikape-reseptiarkisto
 
-Tietokantojen perusteet -kurssilla tehtävän web-sovelluksen pohja.
+Muokattu Tietokantojen perusteet -kurssilla tehtävästä web-sovelluksen pohjasta tikape-runko.
 
