@@ -13,7 +13,9 @@
         
         <ul>
             <li th:each="annos : ${annokset}">
-                <span th:text="${annos.nimi}">esimerkki</span>
+                <a th:href="@{~/resepti/{annosNimi}/{annosId} (annosNimi=${annos.nimi}) (annosId=${annos.id})}">
+                    <span th:text="${annos.nimi}">esimerkki</span>
+                </a>
             </li>
         </ul>
         

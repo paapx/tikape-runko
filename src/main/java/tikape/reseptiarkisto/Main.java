@@ -31,7 +31,8 @@ public class Main {
         Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("viesti", ":");
-
+            map.put("annokset", annosDao.findAll());
+            
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
