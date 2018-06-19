@@ -13,13 +13,13 @@
         
         <ul>
             <li th:each="annos : ${annokset}">
-                <a th:href="@{~/resepti/{annosNimi}/{annosId} (annosNimi=${annos.nimi}) (annosId=${annos.id})}">
+                <a th:href="@{~/resepti/{annosId} (annosId=${annos.id})}">
                     <span th:text="${annos.nimi}">esimerkki</span>
                 </a>
             </li>
         </ul>
         
-        <p> Toiminnot<span th:text="${viesti}">jotain?</span></p>
+        <p>\n<span th:text="${viesti}">jotain?</span></p>
         
         <p><a href="/reseptit">Luo uusi resepti.</a></p>
         
