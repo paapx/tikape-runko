@@ -30,12 +30,12 @@
         <form method="POST" action="">
             Reseptin nimi:<br/>
             <select name="annos">
-                <option th:each="annos : ${annokset}" name="annos.nimi">esimerkki</option>
+                <option th:each="annos : ${annokset}" name="annos.nimi">annos.nimi</option>
             </select>
             <br/>
             Lisättävä raaka-aine<br/>
             <select name="raakaAine">
-                <option th:each="raakaAine : ${raakaAineet}" name="raakaAine.nimi">esimerkki</option>
+                <option th:each="raakaAine : ${raakaAineet}" name="raakaAine.nimi">name</option>
             </select>
             <br/>
             Järjestys<br/>
