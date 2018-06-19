@@ -83,7 +83,6 @@ public class AnnosDao implements Dao<Annos, Integer> {
     }
     
     @Override
-    public Annos save(Annos object) throws SQLException {
-        return null;
+    public void save(Annos object) throws SQLException {
     }
 }

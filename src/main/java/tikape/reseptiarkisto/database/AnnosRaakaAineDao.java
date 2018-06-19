@@ -153,11 +153,47 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
         ResultSet rs = stmt.executeQuery();
         
         if(rs.next()) {
-            resepteja = rs.getInt("annoksia");
+            annoksia = rs.getInt("annoksia");
         }
         
         rs.close();
         conn.close();
         
         return annoksia;
+        
+    }
+    
+    @Override
+    public void save(AnnosRaakaAine annosaine) throws SQLException {
+        if(annosaine.getRaakaAine_id() == null || annosaine.getAnnos_id() == null || annosaine.getJarjestysnumero() == null || annosaine.getMaara() == null) {
+            return;
+        }
+        
+        Connection conn = database.getConnection();
+        
+        PreparedStatement test 
+                = conn.prepareStatement("SELECT * FROM AnnosRaakaAine "
+                + "WHERE raakaAine_id = ? AND annos_id = ? ");
+        test.setInt(1, annosaine.getRaakaAine_id());
+        test.setInt(2, annosaine.getAnnos_id());
+        ResultSet rs = test.executeQuery();
+        
+        if(rs.next()) {
+            return;
+        }
+        
+        PreparedStatement stmt 
+                = conn.prepareStatement("INSERT INTO ReseptiRaakaAine "
+                + "(raakaAine_id, annos_id, jarjestys, maara, ohje) VALUES "
+                + "(?, ?, ?, ?, ?)");
+        stmt.setInt(1, annosaine.getRaakaAine_id());
+        stmt.setInt(2, annosaine.getAnnos_id());
+        stmt.setInt(3, annosaine.getJarjestysnumero());
+        stmt.setString(4, annosaine.getMaara());
+        stmt.setString(5, annosaine.getOhje());
+        
+        stmt.executeUpdate();
+        
+        conn.close();
+    }
 }

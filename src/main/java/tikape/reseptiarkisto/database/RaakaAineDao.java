@@ -83,10 +83,10 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
     }
     
     @Override
-    public RaakaAine save(RaakaAine object) throws SQLException {
+    public void save(RaakaAine object) throws SQLException {
         // tarkista ettei nimi ole null eikä tyhjä.
             if(object.getNimi() == null || object.getNimi().equals("")) {
-                return null;
+                return;
 }
             // avaa yhteys tietokantaan
             Connection conn = database.getConnection();
@@ -98,7 +98,7 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
             ResultSet rs = testStmt.executeQuery();
             
             if(rs.next()) {
-                return null;
+                return;
             }
 
             PreparedStatement stmt
@@ -109,8 +109,6 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
 
             // sulje yhteys tietokantaan
             conn.close();
-            
-            return null;
             
         }
             
