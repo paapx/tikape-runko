@@ -45,7 +45,7 @@ public class Main {
 
         Spark.get("/reseptit/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("annos", annosDao.findOne(Integer.parseInt(req.params("id"))));
+            map.put("annos", annosDao.findOne(Integer.parseInt(req.params(":id"))));
 
             return new ModelAndView(map, "annos");
         }, new ThymeleafTemplateEngine());
@@ -95,7 +95,7 @@ public class Main {
 
         get("/raaka-aineet/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("raakaAine", raakaAineDao.findOne(Integer.parseInt(req.params("id"))));
+            map.put("raakaAine", raakaAineDao.findOne(Integer.parseInt(req.params(":id"))));
 
             return new ModelAndView(map, "raakaAine");
         }, new ThymeleafTemplateEngine());
@@ -138,17 +138,20 @@ public class Main {
 
         get("/resepti/:annosId/raaka-aineet", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("annosRaakaAineet", annosRaakaAineDao.findAll());
+            map.put("annosRaakaAineet", annosRaakaAineDao.etsiAnnoksenRaakaAineet(Integer.parseInt(req.params(":annosId"))));
 
             return new ModelAndView(map, "resepti");
         }, new ThymeleafTemplateEngine());
 
+        /*
         get("/resepti/:annosId/raaka-aineet/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("raakaAine", annosRaakaAineDao.findOne(Integer.parseInt(req.params("id"))));
+            map.put("raakaAine", annosRaakaAineDao.findOne(Integer.parseInt(req.params(":id"))));
 
             return new ModelAndView(map, "raakaAine");
         }, new ThymeleafTemplateEngine());
+        */
+        
         
         Spark.post("/resepti/:annosId/raaka-aineet", (req, res) -> {
             System.out.println("Hei maailma!");

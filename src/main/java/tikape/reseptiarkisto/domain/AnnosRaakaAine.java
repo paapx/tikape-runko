@@ -14,6 +14,7 @@ public class AnnosRaakaAine {
         this.jarjestysnumero = jarjestysnumero;
         this.maara = maara;
         this.ohje = ohje;
+        
     }
 
     public Integer getAnnos_id() {
