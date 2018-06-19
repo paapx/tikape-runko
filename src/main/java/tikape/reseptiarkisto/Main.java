@@ -4,8 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import spark.ModelAndView;
 import spark.Spark;
 import static spark.Spark.*;
@@ -157,7 +162,9 @@ public class Main {
                 Integer annoksia = annosRaakaAineDao.countAllAnnosForRaakaAine(rAine.getId());
                 esiintymiskerrat.put(rAine,annoksia);
             }
-
+            
+            Main.sortByValue(esiintymiskerrat);
+            
             HashMap map = new HashMap<>();
             map.put("raakaAineet", raakaAineet);
             map.put("esiintymiskerrat", esiintymiskerrat);
@@ -252,5 +259,18 @@ public class Main {
         });
         */
         
+    }
+    
+    // https://stackoverflow.com/questions/109383/sort-a-mapkey-value-by-values
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+        List<Entry<K, V>> list = new ArrayList<>(map.entrySet());
+        list.sort(Entry.comparingByValue());
+
+        Map<K, V> result = new LinkedHashMap<>();
+        for (Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
     }
 }
