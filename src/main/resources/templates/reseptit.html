@@ -12,7 +12,7 @@
             <ul>
                 <li th:each="annos : ${annokset}">
                     <span th:text="${annos.nimi}">esimerkki</span>
-                    <form method="POST" th:action="@{~/reseptit/{annosId}/delete (annosId=${annos.id})}"><input type="submit" value="Poista"/></form>
+                    <a th:href="@{~/reseptit/{annosId}/delete (annosId=${annos.id})}">(poista)</a>
                 </li>
             </ul>
         
