@@ -138,7 +138,7 @@ public class Main {
 
         get("/resepti/:annosId/raaka-aineet", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("annosRaakaAineet", annosRaakaAineDao.etsiAnnoksenRaakaAineet(Integer.parseInt(req.params(":annosId"))));
+            map.put("raakaAineet", annosRaakaAineDao.etsiAnnoksenRaakaAineet(Integer.parseInt(req.params(":annosId"))));
 
             return new ModelAndView(map, "resepti");
         }, new ThymeleafTemplateEngine());

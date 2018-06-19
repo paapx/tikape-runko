@@ -12,8 +12,8 @@
         <p>Olet saapunut reseptin <span th:text="${annos.nimi}">resepti</span> sivulle.</p>
         
         <ul>
-                <li th:each="annosRaakaAine : ${AnnosRaakaAineet}">
-                    <span th:text="${annosRaakaAine.raakaAineenNimi}">esimerkki</span>
+                <li th:each="raakaAine : ${raakaAineet}">
+                    <span th:text="${RaakaAine.nimi}">esimerkki</span>
                 </li>
         </ul>
     </body>
