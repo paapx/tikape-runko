@@ -38,6 +38,7 @@ public class Main {
         RaakaAineDao raakaAineDao = new RaakaAineDao(database);
         AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
 
+        
         // Näyttää kaikki reseptit
         Spark.get("/", (req, res) -> {
             
@@ -135,7 +136,7 @@ public class Main {
         }, new ThymeleafTemplateEngine());
         
         
-        
+        // Lisää raaka-aineen reseptiin
         Spark.post("/reseptit/lisaa-raaka-aine", (req, res) -> {
             Integer raakaAineId = Integer.parseInt(req.queryParams("raakaAineId"));
             Integer annosId = Integer.parseInt(req.queryParams("annosId"));

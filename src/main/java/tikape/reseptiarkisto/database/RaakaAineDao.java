@@ -23,8 +23,8 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
 
     @Override
     public RaakaAine findOne(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RaakaAine WHERE id = ?");
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM RaakaAine WHERE id = ?");
         stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -40,7 +40,7 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
 
         rs.close();
         stmt.close();
-        connection.close();
+        conn.close();
 
         return r;
     }
@@ -107,10 +107,10 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
 
             stmt.executeUpdate();
 
-            // sulje yhteys tietokantaan
+            rs.close();
+            stmt.close();
             conn.close();
             
-        }
-            
+        }     
     }
 

@@ -79,7 +79,6 @@ public class AnnosDao implements Dao<Annos, Integer> {
         
         stmt.close();
         conn.close();
-        
     }
     
     @Override
@@ -94,7 +93,6 @@ public class AnnosDao implements Dao<Annos, Integer> {
         stmt.executeUpdate();
 
         stmt.close();
-        // sulje yhteys tietokantaan
         conn.close();
     }
 }
