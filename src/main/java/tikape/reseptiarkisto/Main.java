@@ -74,7 +74,7 @@ public class Main {
             return new ModelAndView(map, "raakaAine");
         }, new ThymeleafTemplateEngine());
         
-        Spark.post("/", (req, res) -> {
+        Spark.post("/raaka-aineet", (req, res) -> {
             System.out.println("Hei maailma!");
             System.out.println("Saatiin: "
                     + req.queryParams("raakaAine"));
@@ -92,7 +92,7 @@ public class Main {
             // sulje yhteys tietokantaan
             conn.close();
 
-            res.redirect("/");
+            res.redirect("/raaka-aineet");
             return "";
         });
         
