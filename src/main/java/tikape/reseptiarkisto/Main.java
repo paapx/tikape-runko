@@ -98,7 +98,7 @@ public class Main {
         });
         
         // Poistaa raaka-aineen
-        Spark.post("/:raakaAineId/delete", (req, res) -> {
+        Spark.get("/raaka-aineet/:raakaAineId/delete", (req, res) -> {
             
             Integer raakaAineId = Integer.parseInt(req.params(":raakaAineId"));
             annosRaakaAineDao.deleteRaakaAine(raakaAineId);
@@ -159,20 +159,7 @@ public class Main {
             res.redirect("/raaka-aineet");
             return "";
         });
-        
-        // Poistaa raaka-aineen
-        Spark.post("/raaka-aineet/:raakaAineId/delete", (req, res) -> {
-            
-            Integer raakaAineId = Integer.parseInt(req.params(":raakaAineId"));
-            
-            annosRaakaAineDao.deleteRaakaAine(raakaAineId);
-            raakaAineDao.delete(raakaAineId);
-            
-            res.redirect("/raaka-aineet");
-            return "";
-        });    
     }
-    
     
     // Järjestää hajautustaulun arvojen mukaan suurimmasta arvosta pienimpään
     public static <Avain, Arvo extends Comparable<? super Arvo>> Map<Avain, Arvo> sortByArvo(Map<Avain, Arvo> hajautustaulu) {
