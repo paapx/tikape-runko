@@ -126,7 +126,7 @@ public class Main {
         */
         
         // Poistaa reseptin
-        Spark.post("/:annosId/delete", (req, res) -> {
+        Spark.post("/reseptit/:annosId/delete", (req, res) -> {
             
             Integer annosId = Integer.parseInt(req.params(":annosId"));
             annosRaakaAineDao.deleteAnnos(annosId);

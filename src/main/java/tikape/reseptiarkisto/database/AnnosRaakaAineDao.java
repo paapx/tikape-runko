@@ -156,7 +156,7 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
         Connection conn = database.getConnection();
             
         // tee kysely
-        PreparedStatement stmt = conn.prepareStatement("DELETE * FROM AnnosRaakaAine WHERE annos_id = ?");
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM AnnosRaakaAine WHERE annos_id = ?");
         stmt.setInt(1, annosId);
         stmt.executeUpdate();
         
@@ -169,7 +169,7 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
         Connection conn = database.getConnection();
             
         // tee kysely
-        PreparedStatement stmt = conn.prepareStatement("DELETE * FROM AnnosRaakaAine WHERE raakaAine_id = ?");
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM AnnosRaakaAine WHERE raakaAine_id = ?");
         stmt.setInt(1, raakaAineId);
         stmt.executeUpdate();
         
