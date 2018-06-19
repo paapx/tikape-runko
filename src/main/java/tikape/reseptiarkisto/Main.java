@@ -176,17 +176,17 @@ public class Main {
         */
         
         
-        Spark.post("/reseptit/lisaa-raaka-aine/", (req, res) -> {
+        Spark.post("/reseptit/lisaa-raaka-aine", (req, res) -> {
             Integer raakaAineId = Integer.parseInt(req.queryParams("raakaAineId"));
             Integer annosId = Integer.parseInt(req.queryParams("annosId"));
             Integer jarjestysnumero = Integer.parseInt(req.queryParams("jarjestysnumero"));
             String maara = req.queryParams("maara");
             String ohje = req.queryParams("ohje");
             
-            annosRaakaAineDao.save(new AnnosRaakaAine(raakaAineId, annosId, "placeholder", jarjestysnumero,
+            annosRaakaAineDao.save(new AnnosRaakaAine(raakaAineId, annosId, "esimerkkiNimi", jarjestysnumero,
                     maara, ohje));
             
-            res.redirect("/reseptit/");
+            res.redirect("/reseptit");
             
             return "";
         });
