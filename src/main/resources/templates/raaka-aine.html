@@ -1,0 +1,20 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Reseptiarkisto</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1>Hei <span th:text="${raakaAine.nimi}">raakaAine</span>!</h1>
+
+        <p>Olet saapunut raaka-aineen <span th:text="${raakaAine.nimi}">raakaAine</span> sivulle.</p>
+        
+        <ul>
+                <li th:each="annosRaakaAine : ${AnnosRaakaAineet}">
+                    <span th:text="${annos.nimi}">esimerkki</span>
+                </li>
+        </ul>
+    </body>
+</html>

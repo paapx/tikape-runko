@@ -140,7 +140,7 @@ public class Main {
             HashMap map = new HashMap<>();
             map.put("annosRaakaAineet", annosRaakaAineDao.findAll());
 
-            return new ModelAndView(map, "/resepti/:annosId/raaka-aineet");
+            return new ModelAndView(map, "resepti");
         }, new ThymeleafTemplateEngine());
 
         get("/resepti/:annosId/raaka-aineet/:id", (req, res) -> {
