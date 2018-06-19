@@ -14,7 +14,7 @@
         <ul>
                 <li th:each="annosRaakaAine : ${annosRaakaAineet}">
                     <span th:text="${annosRaakaAine.nimi+ ', ' + annosRaakaAine.maara}">raaka-aine ja sen määrä</span><br/>
-                    <span th:text="${annosRaakaAineohje}"></span>
+                    <span th:text="${annosRaakaAine.ohje}"></span>
                 </li>
         </ul>
         
