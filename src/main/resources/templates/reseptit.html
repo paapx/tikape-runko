@@ -29,8 +29,8 @@
 
         <form method="POST" action="">
             Reseptin nimi:<br/>
-            <select name="annos">
-                <option th:each="annos : ${annokset}" name="annos.nimi">annos.nimi</option>
+            <select name="annos.nimi">
+                <option th:each="annos : ${annokset}" name="annos.nimi"></option>
             </select>
             <br/>
             Lisättävä raaka-aine<br/>
