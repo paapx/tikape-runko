@@ -76,7 +76,17 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
-        // ei toteutettu
+        // avaa yhteys tietokantaan
+        Connection conn = database.getConnection();
+            
+        // tee kysely
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM AnnosRaakaAine WHERE (annos_id, raakaAine_id) = ?");
+        stmt.setInt(1, key);
+        stmt.executeUpdate();
+        
+        stmt.close();
+        conn.close();
+        
     }
 
 }

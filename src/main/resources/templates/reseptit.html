@@ -1,0 +1,58 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Otsikko</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1>Reseptit:</h1>
+
+            <ul>
+                <li th:each="annos : ${annokset}">
+                    <span th:text="${annos.nimi}">esimerkki</span>
+                    <form method="POST" th:action="@{~/{annosId}/delete(annosId=${raakaAine.id})}"><input type="submit" value="Poista"/></form>
+                </li>
+            </ul>
+        
+        <h4>Lisää uusi resepti</h4>
+  
+        <form method="POST" action="">
+            Raaka-aineen nimi:<br/>
+            <input type="text" name="annos"/><br/>
+            <input type="submit" value="Lisää"/>
+        </form>
+    
+        <h4>Lisää raaka-aineita</h4>
+
+        <form method="POST" action="">
+            Smoothien nimi:<br/>
+            <select name="smoothie">
+                <option name="2">Aurinkolasit</option>
+                <option name="1">Mustikkaplorays</option>
+            </select>
+            <br/>
+            Lisättävä raaka-aine<br/>
+            <select name="raakaAine">
+                <option name="1">Appelsiini</option>
+                <option name="2">Banaani</option>
+                <option name="...">...</option>
+            </select>
+            <br/>
+            Järjestys<br/>
+            <input type="text"/><br/>
+            Määrä<br/>
+            <input type="text"/><br/>
+            Ohje<br/>
+            <input type="text"/><br/>
+            <input type="submit" value="Lisää"/>
+        </form>
+
+        <ul>
+            <li>
+            <a href="../">Reseptiarkiston etusivulle</a>
+            </li>
+        </ul>
+    </body>
+</html>

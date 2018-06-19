@@ -28,28 +28,60 @@ public class Main {
 
         AnnosDao annosDao = new AnnosDao(database);
 
-        get("/", (req, res) -> {
+        Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("viesti", ":");
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
-        get("/annokset", (req, res) -> {
+        Spark.get("/reseptit", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("annokset", annosDao.findAll());
 
-            return new ModelAndView(map, "annokset");
+            return new ModelAndView(map, "reseptit");
         }, new ThymeleafTemplateEngine());
 
-        get("/annokset/:id", (req, res) -> {
+        Spark.get("/reseptit/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("annos", annosDao.findOne(Integer.parseInt(req.params("id"))));
 
             return new ModelAndView(map, "annos");
         }, new ThymeleafTemplateEngine());
         
+        Spark.post("/reseptit", (req, res) -> {
+            System.out.println("Hei maailma!");
+            System.out.println("Saatiin: "
+                    + req.queryParams("annos"));
+
+            // avaa yhteys tietokantaan
+            Connection conn = database.getConnection();
+            
+            // tee kysely
+            PreparedStatement stmt
+                    = conn.prepareStatement("INSERT INTO Annos (nimi) VALUES (?)");
+            stmt.setString(1, req.queryParams("annos"));
+
+            stmt.executeUpdate();
+
+            // sulje yhteys tietokantaan
+            conn.close();
+
+            res.redirect("/reseptit");
+            return "";
+        });
         
+        Spark.post("/:annosId/delete", (req, res) -> {
+            
+            annosDao.delete(Integer.parseInt(req.params(":annosId")));
+        
+            res.redirect("/reseptit");
+            return "";
+        });
+        
+        
+        
+        //RAAKA-AINEET
         
         RaakaAineDao raakaAineDao = new RaakaAineDao(database);
 
