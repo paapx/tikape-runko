@@ -165,8 +165,14 @@ public class Main {
             
             Main.sortByValue(esiintymiskerrat);
             
+            List<RaakaAine> sortedRaakaAineet = new ArrayList<>();
+            
+            for(RaakaAine rAine : esiintymiskerrat.keySet()) {
+                sortedRaakaAineet.add(rAine);
+            }
+            
             HashMap map = new HashMap<>();
-            map.put("raakaAineet", raakaAineet);
+            map.put("raakaAineet", sortedRaakaAineet);
             map.put("esiintymiskerrat", esiintymiskerrat);
 
             return new ModelAndView(map, "raaka-aineet");
