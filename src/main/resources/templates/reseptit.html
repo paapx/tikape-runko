@@ -36,7 +36,7 @@
             </select>
             <br/>
         </form>
-        <form method="POST" action="">
+        <form method="POST" action="/resepti/:annosId/raaka-aineet">
             Lisättävä raaka-aine<br/>
             <select name="raakaAine">
                 <option th:each="raakaAine : ${raakaAineet}" th:value="${raakaAine.id}" th:text="${raakaAine.nimi}">
