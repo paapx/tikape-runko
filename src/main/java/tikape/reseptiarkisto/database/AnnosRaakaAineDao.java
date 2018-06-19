@@ -224,7 +224,7 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
         }
         
         PreparedStatement stmt 
-                = conn.prepareStatement("INSERT INTO ReseptiRaakaAine "
+                = conn.prepareStatement("INSERT INTO AnnosRaakaAine "
                 + "(raakaAine_id, annos_id, jarjestys, maara, ohje) VALUES "
                 + "(?, ?, ?, ?, ?)");
         stmt.setInt(1, annosaine.getRaakaAine_id());
