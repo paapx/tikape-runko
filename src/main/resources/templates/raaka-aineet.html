@@ -9,6 +9,8 @@
     <body>
         <h1>Raaka-aineet:</h1>
         
+        <p>Alla on listattuna raaka-aineet eniten käytetyimmästä vähiten käytetyimpään.</p>
+        
         <ul>
             <li th:each="raakaAine : ${raakaAineet}">
                 <span th:text="${raakaAine.nimi + ' (reseptejä ' + esiintymiskerrat.get(raakaAine) +')'}">resepti</span>
