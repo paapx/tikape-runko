@@ -136,7 +136,7 @@ public class Main {
         
         AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
 
-        get("/resepti/:annosId/raaka-aineet", (req, res) -> {
+        get("/resepti/:annosId", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("raakaAineet", annosRaakaAineDao.etsiAnnoksenRaakaAineet(Integer.parseInt(req.params(":annosId"))));
 
@@ -153,7 +153,7 @@ public class Main {
         */
         
         
-        Spark.post("/resepti/:annosId/raaka-aineet", (req, res) -> {
+        Spark.post("/resepti/:annosId", (req, res) -> {
             System.out.println("Hei maailma!");
             System.out.println("Saatiin: "
                     + req.queryParams("raakaAine"));
@@ -171,7 +171,7 @@ public class Main {
             // sulje yhteys tietokantaan
             conn.close();
 
-            res.redirect("/resepti/:annosId/raaka-aineet");
+            res.redirect("/resepti/:annosId");
             return "";
         });
         
