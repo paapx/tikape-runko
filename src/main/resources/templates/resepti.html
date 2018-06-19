@@ -9,7 +9,7 @@
     <body>
         <h1>Resepti: <span th:text="${annos.nimi}">resepti</span></h1>
 
-        <p>Alla <span th:text="${annos.nimi}">-reseptin ohjeet</span> ohjeet.</p>
+        <p>Alla <span th:text="${annos.nimi}">resepti</span>-reseptin ohjeet.</p>
         
         <ul>
                 <li th:each="annosRaakaAine : ${annosRaakaAineet}">
@@ -18,16 +18,11 @@
                 </li>
         </ul>
         
-        <ul>
-            <li>
-                <a href="../">Palaa etusivulle</a>
-            </li>
-            <li>
-                <a href="/reseptit">Muokkaa reseptejä tai luo uusi resepti</a>
-            </li>
-            <li>
-                <a href="/raaka-aineet">Tarkastele, lisää tai poista raaka-aineita</a>
-            </li>
-        </ul>
+        <p><a href="../">Palaa etusivulle</a></p>
+        
+        <p><a href="/reseptit">Muokkaa reseptejä tai luo uusi resepti</a></p>
+        
+        <p><a href="/raaka-aineet">Tarkastele, lisää tai poista raaka-aineita</a></p>
+        
     </body>
 </html>
