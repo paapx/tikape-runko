@@ -26,7 +26,7 @@ public class AnnosRaakaAine {
     }
     
     public Integer getJarjestysnumero() {
-        return this.annos_id;
+        return this.jarjestysnumero;
     }
     
     public String getMaara() {

@@ -7,14 +7,20 @@
     </head>
 
     <body>
-        <h1>Hei <span th:text="${annos.nimi}">annos</span>!</h1>
+        <h1>Resepti: <span th:text="${annos.nimi}">resepti</span>!</h1>
 
-        <p>Olet saapunut reseptin <span th:text="${annos.nimi}">resepti</span> sivulle.</p>
+        <p>Alla reseptin <span th:text="${annos.nimi}">resepti</span> ohjeet.</p>
         
         <ul>
-                <li th:each="raakaAine : ${raakaAineet}">
-                    <span th:text="${raakaAine.nimi}">esimerkki</span>
+                <li th:each="annosRaakaAine : ${annosRaakaAineet}">
+                    <span th:text="${annosRaakaAine.nimi+ ', ' + annosRaakaAine.maara}">raaka-aine ja sen määrä</span><br/>
+                    <span th:text="${annosRaakaAineohje}"></span>
                 </li>
+        </ul>
+        
+        <ul>
+            <li><a href="/">Palaa etusivulle</a></li>
+            <li><a href="/reseptit">Luo uusi resepti ja muokkaa reseptejä</a></li>
         </ul>
     </body>
 </html>

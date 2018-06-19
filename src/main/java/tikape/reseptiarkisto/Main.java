@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import spark.ModelAndView;
 import spark.Spark;
 import static spark.Spark.*;
@@ -13,47 +14,81 @@ import tikape.reseptiarkisto.database.Database;
 import tikape.reseptiarkisto.database.AnnosDao;
 import tikape.reseptiarkisto.database.AnnosRaakaAineDao;
 import tikape.reseptiarkisto.database.RaakaAineDao;
+import tikape.reseptiarkisto.domain.Annos;
+import tikape.reseptiarkisto.domain.AnnosRaakaAine;
+import tikape.reseptiarkisto.domain.RaakaAine;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
         
-        // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
+        // aseta portti jos heroku antaa PORT-ympäristömuuttujan
         if (System.getenv("PORT") != null) {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
         }
         
+        // hae Herokun tietokannan osoite
         String dbUrl = System.getenv("JDBC_DATABASE_URL");
         
+        // tee Database-olio
         Database database = new Database(dbUrl);
 
+        // tee Dao-oliot
         AnnosDao annosDao = new AnnosDao(database);
+        RaakaAineDao raakaAineDao = new RaakaAineDao(database);
+        AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
 
+        // näyttää kaikki reseptit
         Spark.get("/", (req, res) -> {
+            
+            List<Annos> reseptit = annosDao.findAll();
             HashMap map = new HashMap<>();
-            map.put("annokset", annosDao.findAll());
+            map.put("annokset", reseptit);
             
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
+        // näyttää reseptilisäyksen
         Spark.get("/reseptit", (req, res) -> {
+            
+            List<Annos> reseptit = annosDao.findAll();
+            List<RaakaAine> raakaAineet = raakaAineDao.findAll();
             HashMap map = new HashMap<>();
-            map.put("annokset", annosDao.findAll());
+            map.put("annokset", reseptit);
+            map.put("raakaAineet",raakaAineet);
 
             return new ModelAndView(map, "reseptit");
         }, new ThymeleafTemplateEngine());
 
-        Spark.get("/reseptit/:id", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("annos", annosDao.findOne(Integer.parseInt(req.params(":id"))));
+        // lisää uuden reseptin reseptilistaukseen
+        Spark.post("/reseptit/lisaa-resepti/", (req, res) -> {
+            annosDao.save(new Annos(-1, req.queryParams("annos")));
+            
+            res.redirect("/reseptit");
+            
+            return "";
+        });
+        
+        // näyttää reseptin
+        Spark.get("/resepti/:annosId", (req, res) -> {
+            
+            Integer annosId = Integer.parseInt(req.params(":annosId"));
+            Annos annos = annosDao.findOne(annosId);
+            
+            List<RaakaAine> raakaAineet = annosRaakaAineDao.findAllRaakaAineInAnnos(annosId);
 
-            return new ModelAndView(map, "annos");
+            HashMap map = new HashMap<>();
+            
+            map.put("annos", annos);
+            map.put("annosRaakaAineet", raakaAineet);
+
+            return new ModelAndView(map, "resepti");
         }, new ThymeleafTemplateEngine());
         
+        
+        
+        /*
         Spark.post("/reseptit", (req, res) -> {
-            System.out.println("Hei maailma!");
-            System.out.println("Saatiin: "
-                    + req.queryParams("annos"));
 
             // avaa yhteys tietokantaan
             Connection conn = database.getConnection();
@@ -71,78 +106,81 @@ public class Main {
             res.redirect("/reseptit");
             return "";
         });
+        */
         
+        // Poistaa reseptin
         Spark.post("/:annosId/delete", (req, res) -> {
             
-            annosDao.delete(Integer.parseInt(req.params(":annosId")));
+            Integer annosId = Integer.parseInt(req.params(":annosId"));
+            annosRaakaAineDao.deleteAnnos(annosId);
+            annosDao.delete(annosId);
         
             res.redirect("/reseptit");
             return "";
         });
         
+        // Poistaa raaka-aineen
+        Spark.post("/:raakaAineId/delete", (req, res) -> {
+            
+            Integer raakaAineId = Integer.parseInt(req.params(":raakaAineId"));
+            annosRaakaAineDao.deleteRaakaAine(raakaAineId);
+            raakaAineDao.delete(raakaAineId);
         
-        
-        //RAAKA-AINEET
-        
-        RaakaAineDao raakaAineDao = new RaakaAineDao(database);
+            res.redirect("/raaka-aineet");
+            return "";
+        });
+  
+        // näyttää kaikki raaka-aineet
+        Spark.get("/raaka-aineet", (req, res) -> {
+            
+            List<RaakaAine> raakaAineet = raakaAineDao.findAll();
+            HashMap<RaakaAine, Integer> esiintymiskerrat = new HashMap<>();
+            
+            for(RaakaAine rAine : raakaAineet) {
+                Integer annoksia = annosRaakaAineDao.countAllAnnosForRaakaAine(rAine.getId());
+                esiintymiskerrat.put(rAine,annoksia);
+            }
 
-        get("/raaka-aineet", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("raakaAineet", raakaAineDao.findAll());
+            map.put("raakaAineet", raakaAineet);
+            map.put("esiintymiskerrat", esiintymiskerrat);
 
             return new ModelAndView(map, "raaka-aineet");
         }, new ThymeleafTemplateEngine());
 
-        get("/raaka-aineet/:id", (req, res) -> {
+        
+        /*
+        Spark.get("/raaka-aineet/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("raakaAine", raakaAineDao.findOne(Integer.parseInt(req.params(":id"))));
 
             return new ModelAndView(map, "raakaAine");
         }, new ThymeleafTemplateEngine());
+        */
         
+        
+        
+        // lisää raaka-aineen
         Spark.post("/raaka-aineet", (req, res) -> {
-            System.out.println("Hei maailma!");
-            System.out.println("Saatiin: "
-                    + req.queryParams("raakaAine"));
-
-            // avaa yhteys tietokantaan
-            Connection conn = database.getConnection();
             
-            // tee kysely
-            PreparedStatement stmt
-                    = conn.prepareStatement("INSERT INTO RaakaAine (nimi) VALUES (?)");
-            stmt.setString(1, req.queryParams("raakaAine"));
-
-            stmt.executeUpdate();
-
-            // sulje yhteys tietokantaan
-            conn.close();
+            raakaAineDao.save(new RaakaAine(-1,req.queryParams("raakaAine")));
 
             res.redirect("/raaka-aineet");
             return "";
         });
         
-        Spark.post("/:raakaAineId/delete", (req, res) -> {
+        // poista raaka-aine
+        Spark.post("/raaka-aineet/:raakaAineId/delete", (req, res) -> {
             
-            raakaAineDao.delete(Integer.parseInt(req.params(":raakaAineId")));
-        
+            Integer raakaAineId = Integer.parseInt(req.params(":raakaAineId"));
+            
+            annosRaakaAineDao.deleteRaakaAine(raakaAineId);
+            raakaAineDao.delete(raakaAineId);
+            
             res.redirect("/raaka-aineet");
             return "";
         });
         
-        
-        
-        //ANNOSRAAKA-AINEET
-        
-        AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
-
-        get("/resepti/:annosId", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("annos", annosDao.findOne(Integer.parseInt(req.params(":annosId"))));
-            map.put("raakaAineet", annosRaakaAineDao.etsiAnnoksenRaakaAineet(Integer.parseInt(req.params(":annosId"))));
-
-            return new ModelAndView(map, "resepti");
-        }, new ThymeleafTemplateEngine());
 
         /*
         get("/resepti/:annosId/raaka-aineet/:id", (req, res) -> {
@@ -153,12 +191,8 @@ public class Main {
         }, new ThymeleafTemplateEngine());
         */
         
-        
+        /*
         Spark.post("/resepti/:annosId", (req, res) -> {
-            System.out.println("Hei maailma!");
-            System.out.println("Saatiin: "
-                    + req.queryParams("raakaAine"));
-
             // avaa yhteys tietokantaan
             Connection conn = database.getConnection();
             
@@ -175,6 +209,7 @@ public class Main {
             res.redirect("/resepti/:annosId");
             return "";
         });
+        */
         
         /*
         Spark.post("/resepti/:annosId/raaka-aineet/:raakaAineId/delete", (req, res) -> {

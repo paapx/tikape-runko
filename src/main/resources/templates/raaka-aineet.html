@@ -11,8 +11,8 @@
         
         <ul>
             <li th:each="raakaAine : ${raakaAineet}">
-                <span th:text="${raakaAine.nimi}">esimerkki</span>
-                <form method="POST" th:action="@{~/{raakaAineId}/delete(raakaAineId=${raakaAine.id})}"><input type="submit" value="Poista"/></form>
+                <span th:text="${raakaAine.nimi}+ ' (reseptejä ' + esiintymiskerrat.get(raakaAine) +')'}">resepti</span>
+                <a th:href="@{~/raaka-aineet/{raakaAineId}/delete(raakaAineId=${raakaAine.id})}">(poista)</a>
             </li>
         </ul>
 
@@ -26,8 +26,9 @@
 
         <ul>
             <li>
-            <a href="../">Reseptiarkiston etusivulle</a>
+            <a href="../">Palaa etusivulle</a>
             </li>
+            <li><a href="/reseptit">Luo uusi resepti ja muokkaa reseptejä</a></li>
         </ul>
     </body>
 </html>

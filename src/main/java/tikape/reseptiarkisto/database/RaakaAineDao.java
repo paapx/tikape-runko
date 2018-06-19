@@ -81,5 +81,38 @@ public class RaakaAineDao implements Dao<RaakaAine, Integer> {
         conn.close();
         
     }
-
+    
+    @Override
+    public RaakaAine save(RaakaAine object) throws SQLException {
+        // tarkista ettei nimi ole null eikä tyhjä.
+            if(object.getNimi() == null || object.getNimi().equals("")) {
+                return null;
 }
+            // avaa yhteys tietokantaan
+            Connection conn = database.getConnection();
+            
+            // tee kysely
+            PreparedStatement testStmt 
+                    = conn.prepareStatement("SELECT * FROM RaakaAine WHERE nimi = ?");
+            testStmt.setString(1, object.getNimi());
+            ResultSet rs = testStmt.executeQuery();
+            
+            if(rs.next()) {
+                return null;
+            }
+
+            PreparedStatement stmt
+                    = conn.prepareStatement("INSERT INTO RaakaAine (nimi) VALUES (?)");
+            stmt.setString(1, object.getNimi());
+
+            stmt.executeUpdate();
+
+            // sulje yhteys tietokantaan
+            conn.close();
+            
+            return null;
+            
+        }
+            
+    }
+

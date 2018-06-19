@@ -81,4 +81,9 @@ public class AnnosDao implements Dao<Annos, Integer> {
         conn.close();
         
     }
+    
+    @Override
+    public Annos save(Annos object) throws SQLException {
+        return null;
+    }
 }

@@ -81,7 +81,7 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
         return annosRaakaAineet;
     }
     
-    public List<RaakaAine> etsiAnnoksenRaakaAineet(Integer annosId) throws SQLException {
+    public List<RaakaAine> findAllRaakaAineInAnnos(Integer annosId) throws SQLException {
 
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT RaakaAine.id AS rId, RaakaAine.nimi AS rNimi FROM RaakaAine, AnnosRaakaAine WHERE AnnosRaakaAine.annos_id = ?");
@@ -107,17 +107,57 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
+        // Ei toteutettu
+    }
+    
+    public void deleteAnnos(Integer annosId) throws SQLException {
         // avaa yhteys tietokantaan
         Connection conn = database.getConnection();
             
         // tee kysely
-        PreparedStatement stmt = conn.prepareStatement("DELETE FROM AnnosRaakaAine WHERE (annos_id, raakaAine_id) = ?");
-        stmt.setInt(1, key);
+        PreparedStatement stmt = conn.prepareStatement("DELETE * FROM AnnosRaakaAine WHERE annos_id = ?");
+        stmt.setInt(1, annosId);
         stmt.executeUpdate();
         
         stmt.close();
         conn.close();
-        
     }
-
+    
+    public void deleteRaakaAine(Integer raakaAineId) throws SQLException {
+        // avaa yhteys tietokantaan
+        Connection conn = database.getConnection();
+            
+        // tee kysely
+        PreparedStatement stmt = conn.prepareStatement("DELETE * FROM AnnosRaakaAine WHERE raakaAine_id = ?");
+        stmt.setInt(1, raakaAineId);
+        stmt.executeUpdate();
+        
+        stmt.close();
+        conn.close();
+    }
+    
+    //public void tallennaRaakaAine() {
+    //}
+    
+    
+    
+    public int countAllAnnosForRaakaAine(Integer raakaAineId) throws SQLException {
+        int annoksia = 0;
+        
+        Connection conn = database.getConnection();
+        
+        PreparedStatement stmt 
+                = conn.prepareStatement("SELECT COUNT(annos_id) AS annoksia "
+                        + "FROM AnnosRaakaAine WHERE raakaAine_id = ? ");
+        stmt.setInt(1, raakaAineId);
+        ResultSet rs = stmt.executeQuery();
+        
+        if(rs.next()) {
+            resepteja = rs.getInt("annoksia");
+        }
+        
+        rs.close();
+        conn.close();
+        
+        return annoksia;
 }
