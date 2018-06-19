@@ -87,7 +87,7 @@ public class Main {
         
         
         // Poistaa reseptin
-        Spark.post("/reseptit/:annosId/delete", (req, res) -> {
+        Spark.get("/reseptit/:annosId/delete", (req, res) -> {
             
             Integer annosId = Integer.parseInt(req.params(":annosId"));
             annosRaakaAineDao.deleteAnnos(annosId);
@@ -133,6 +133,7 @@ public class Main {
 
             return new ModelAndView(map, "raaka-aineet");
         }, new ThymeleafTemplateEngine());
+        
         
         
         Spark.post("/reseptit/lisaa-raaka-aine", (req, res) -> {
