@@ -11,8 +11,8 @@
         
         <ul>
             <li th:each="raakaAine : ${raakaAineet}">
-                <span th:text="${raakaAine.nimi}+ ' (annoksia ' + esiintymiskerrat.get(raakaAine) +')'}">resepti</span>
-                <a th:href="@{~/raaka-aineet/{raakaAineId}/delete(raakaAineId=${raakaAine.id})}">(poista)</a>
+                <span th:text="${raakaAine.nimi + ' (annoksia ' + esiintymiskerrat.get(raakaAine) +')'}">resepti</span>
+                <a th:href="@{~/raaka-aineet/{raakaAineId}/delete (raakaAineId=${raakaAine.id})}">(poista)</a>
             </li>
         </ul>
 
