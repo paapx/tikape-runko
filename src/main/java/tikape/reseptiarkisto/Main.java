@@ -61,7 +61,7 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         // lisää uuden reseptin reseptilistaukseen
-        Spark.post("/reseptit/lisaa-resepti/", (req, res) -> {
+        Spark.post("/reseptit/lisaa-resepti", (req, res) -> {
             annosDao.save(new Annos(-1, req.queryParams("annos")));
             
             res.redirect("/reseptit");
