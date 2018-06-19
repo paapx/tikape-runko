@@ -66,7 +66,7 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
     public List<AnnosRaakaAine> findAll() throws SQLException {
 
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM AnnosRaakaAine");
+        PreparedStatement stmt = connection.prepareStatement("SELECT FROM AnnosRaakaAine");
 
         ResultSet rs = stmt.executeQuery();
         List<AnnosRaakaAine> annosRaakaAineet = new ArrayList<>();
@@ -135,7 +135,7 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
             Integer jarjestysnumero = rs.getInt("jarjestysnumero");
             String maara = rs.getString("maara");
             String ohje = rs.getString("ohje");
-            annosRaakaAineet.add(new AnnosRaakaAine(-1, -1, nimi, jarjestysnumero, maara, ohje));
+            annosRaakaAineet.add(new AnnosRaakaAine(-1, -1, jarjestysnumero, maara, ohje, nimi));
 }
 
         rs.close();

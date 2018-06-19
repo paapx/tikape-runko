@@ -23,8 +23,8 @@ public class AnnosDao implements Dao<Annos, Integer> {
 
     @Override
     public Annos findOne(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Annos WHERE id = ?");
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Annos WHERE id = ?");
         stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -40,7 +40,7 @@ public class AnnosDao implements Dao<Annos, Integer> {
 
         rs.close();
         stmt.close();
-        connection.close();
+        conn.close();
 
         return a;
     }
@@ -87,13 +87,14 @@ public class AnnosDao implements Dao<Annos, Integer> {
         Connection conn = database.getConnection();
         
         // tee kysely
-            PreparedStatement stmt
-                    = conn.prepareStatement("INSERT INTO Annos (nimi) VALUES (?)");
-            stmt.setString(1, object.getNimi());
+        PreparedStatement stmt
+                = conn.prepareStatement("INSERT INTO Annos (nimi) VALUES (?)");
+        stmt.setString(1, object.getNimi());
 
-            stmt.executeUpdate();
+        stmt.executeUpdate();
 
-            // sulje yhteys tietokantaan
-            conn.close();
+        stmt.close();
+        // sulje yhteys tietokantaan
+        conn.close();
     }
 }

@@ -1,9 +1,5 @@
 package tikape.reseptiarkisto;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import spark.ModelAndView;
 import spark.Spark;
-import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.reseptiarkisto.database.Database;
 import tikape.reseptiarkisto.database.AnnosDao;
@@ -43,7 +38,7 @@ public class Main {
         RaakaAineDao raakaAineDao = new RaakaAineDao(database);
         AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
 
-        // näyttää kaikki reseptit
+        // Näyttää kaikki reseptit
         Spark.get("/", (req, res) -> {
             
             List<Annos> reseptit = annosDao.findAll();
@@ -53,7 +48,7 @@ public class Main {
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
-        // näyttää reseptilisäyksen
+        // Näyttää reseptilisäyksen
         Spark.get("/reseptit", (req, res) -> {
             
             List<Annos> reseptit = annosDao.findAll();
@@ -65,7 +60,7 @@ public class Main {
             return new ModelAndView(map, "reseptit");
         }, new ThymeleafTemplateEngine());
 
-        // lisää uuden reseptin reseptilistaukseen
+        // Lisää uuden reseptin reseptilistaukseen
         Spark.post("/reseptit/lisaa-resepti", (req, res) -> {
             annosDao.save(new Annos(-1, req.queryParams("annos")));
             
@@ -74,25 +69,8 @@ public class Main {
             return "";
         });
         
-        /*
-        // näyttää reseptin
-        Spark.get("/resepti/:annosId", (req, res) -> {
-            
-            Integer annosId = Integer.parseInt(req.params(":annosId"));
-            Annos annos = annosDao.findOne(annosId);
-            
-            List<RaakaAine> raakaAineet = annosRaakaAineDao.findAllRaakaAineInAnnos(annosId);
-
-            HashMap map = new HashMap<>();
-            
-            map.put("annos", annos);
-            map.put("annosRaakaAineet", raakaAineet);
-
-            return new ModelAndView(map, "resepti");
-        }, new ThymeleafTemplateEngine());
-        */
-            
-        // näyttää reseptin
+      
+        // Näyttää reseptin
         Spark.get("/resepti/:annosId", (req, res) -> {
             
             Integer annosId = Integer.parseInt(req.params(":annosId"));
@@ -107,28 +85,6 @@ public class Main {
             return new ModelAndView(map, "resepti");
         }, new ThymeleafTemplateEngine());
         
-        
-        
-        /*
-        Spark.post("/reseptit", (req, res) -> {
-
-            // avaa yhteys tietokantaan
-            Connection conn = database.getConnection();
-            
-            // tee kysely
-            PreparedStatement stmt
-                    = conn.prepareStatement("INSERT INTO Annos (nimi) VALUES (?)");
-            stmt.setString(1, req.queryParams("annos"));
-
-            stmt.executeUpdate();
-
-            // sulje yhteys tietokantaan
-            conn.close();
-
-            res.redirect("/reseptit");
-            return "";
-        });
-        */
         
         // Poistaa reseptin
         Spark.post("/reseptit/:annosId/delete", (req, res) -> {
@@ -163,30 +119,20 @@ public class Main {
                 esiintymiskerrat.put(rAine,annoksia);
             }
             
-            Main.sortByValue(esiintymiskerrat);
+            Main.sortByArvo(esiintymiskerrat);
             
             List<RaakaAine> sortedRaakaAineet = new ArrayList<>();
             
-            for(RaakaAine rAine : Main.sortByValue(esiintymiskerrat).keySet()) {
+            for(RaakaAine rAine : Main.sortByArvo(esiintymiskerrat).keySet()) {
                 sortedRaakaAineet.add(rAine);
             }
             
             HashMap map = new HashMap<>();
             map.put("raakaAineet", sortedRaakaAineet);
-            map.put("esiintymiskerrat", Main.sortByValue(esiintymiskerrat));
+            map.put("esiintymiskerrat", Main.sortByArvo(esiintymiskerrat));
 
             return new ModelAndView(map, "raaka-aineet");
         }, new ThymeleafTemplateEngine());
-
-        
-        /*
-        Spark.get("/raaka-aineet/:id", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("raakaAine", raakaAineDao.findOne(Integer.parseInt(req.params(":id"))));
-
-            return new ModelAndView(map, "raakaAine");
-        }, new ThymeleafTemplateEngine());
-        */
         
         
         Spark.post("/reseptit/lisaa-raaka-aine", (req, res) -> {
@@ -196,15 +142,16 @@ public class Main {
             String maara = req.queryParams("maara");
             String ohje = req.queryParams("ohje");
             
-            annosRaakaAineDao.save(new AnnosRaakaAine(raakaAineId, annosId, "esimerkkiNimi", jarjestysnumero,
-                    maara, ohje));
+            annosRaakaAineDao.save(new AnnosRaakaAine(raakaAineId, annosId, jarjestysnumero,
+                    maara, ohje, "esimerkkiNimi"));
             
             res.redirect("/reseptit");
             
             return "";
         });
         
-        // lisää raaka-aineen
+        
+        // Lisää raaka-aineen
         Spark.post("/raaka-aineet", (req, res) -> {
             
             raakaAineDao.save(new RaakaAine(-1,req.queryParams("raakaAine")));
@@ -213,7 +160,7 @@ public class Main {
             return "";
         });
         
-        // poista raaka-aine
+        // Poistaa raaka-aineen
         Spark.post("/raaka-aineet/:raakaAineId/delete", (req, res) -> {
             
             Integer raakaAineId = Integer.parseInt(req.params(":raakaAineId"));
@@ -223,61 +170,22 @@ public class Main {
             
             res.redirect("/raaka-aineet");
             return "";
-        });
-        
-
-        /*
-        get("/resepti/:annosId/raaka-aineet/:id", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("raakaAine", annosRaakaAineDao.findOne(Integer.parseInt(req.params(":id"))));
-
-            return new ModelAndView(map, "raakaAine");
-        }, new ThymeleafTemplateEngine());
-        */
-        
-        /*
-        Spark.post("/resepti/:annosId", (req, res) -> {
-            // avaa yhteys tietokantaan
-            Connection conn = database.getConnection();
-            
-            // tee kysely
-            PreparedStatement stmt
-                    = conn.prepareStatement("INSERT INTO RaakaAine (nimi) VALUES (?)");
-            stmt.setString(1, req.queryParams("raakaAine"));
-
-            stmt.executeUpdate();
-
-            // sulje yhteys tietokantaan
-            conn.close();
-
-            res.redirect("/resepti/:annosId");
-            return "";
-        });
-        */
-        
-        /*
-        Spark.post("/resepti/:annosId/raaka-aineet/:raakaAineId/delete", (req, res) -> {
-            
-            raakaAineDao.delete(Integer.parseInt(req.params(":raakaAineId")));
-        
-            res.redirect("/resepti/:annosId/raaka-aineet");
-            return "";
-        });
-        */
-        
+        });    
     }
     
-    // https://stackoverflow.com/questions/109383/sort-a-mapkey-value-by-values
-    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
-        List<Entry<K, V>> list = new ArrayList<>(map.entrySet());
-        list.sort(Entry.comparingByValue());
-        Collections.reverse(list);
+    
+    // Järjestää hajautustaulun arvojen mukaan suurimmasta arvosta pienimpään
+    public static <Avain, Arvo extends Comparable<? super Arvo>> Map<Avain, Arvo> sortByArvo(Map<Avain, Arvo> hajautustaulu) {
         
-        Map<K, V> result = new LinkedHashMap<>();
-        for (Entry<K, V> entry : list) {
-            result.put(entry.getKey(), entry.getValue());
+        List<Entry<Avain, Arvo>> lista = new ArrayList<>(hajautustaulu.entrySet());
+        lista.sort(Entry.comparingByValue());
+        Collections.reverse(lista);
+        Map<Avain, Arvo> jarjestettyHajautustaulu = new LinkedHashMap<>();
+        
+        for (Entry<Avain, Arvo> entry : lista) {
+            jarjestettyHajautustaulu.put(entry.getKey(), entry.getValue());
         }
 
-        return result;
+        return jarjestettyHajautustaulu;
     }
 }

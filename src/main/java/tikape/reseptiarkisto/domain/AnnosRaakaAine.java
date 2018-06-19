@@ -9,7 +9,7 @@ public class AnnosRaakaAine {
     private String ohje;
     private String raakaAineenNimi;
 
-    public AnnosRaakaAine(Integer raakaAine_id, Integer annos_id, String raakaAineenNimi, Integer jarjestysnumero, String maara, String ohje) {
+    public AnnosRaakaAine(Integer raakaAine_id, Integer annos_id, Integer jarjestysnumero, String maara, String ohje, String raakaAineenNimi) {
         this.annos_id = annos_id;
         this.raakaAine_id = raakaAine_id;
         this.jarjestysnumero = jarjestysnumero;
