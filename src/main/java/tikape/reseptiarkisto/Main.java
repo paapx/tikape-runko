@@ -69,6 +69,7 @@ public class Main {
             return "";
         });
         
+        /*
         // näyttää reseptin
         Spark.get("/resepti/:annosId", (req, res) -> {
             
@@ -81,6 +82,22 @@ public class Main {
             
             map.put("annos", annos);
             map.put("annosRaakaAineet", raakaAineet);
+
+            return new ModelAndView(map, "resepti");
+        }, new ThymeleafTemplateEngine());
+        */
+            
+        // näyttää reseptin
+        Spark.get("/resepti/:annosId", (req, res) -> {
+            
+            Integer annosId = Integer.parseInt(req.params(":annosId"));
+            Annos annos = annosDao.findOne(annosId);
+            
+            List<AnnosRaakaAine> annosRaakaAineet = annosRaakaAineDao.findAllAnnosRaakaAineForAnnos(annosId);
+            HashMap map = new HashMap<>();
+            
+            map.put("annos", annos);
+            map.put("annosRaakaAineet", annosRaakaAineet);
 
             return new ModelAndView(map, "resepti");
         }, new ThymeleafTemplateEngine());
@@ -166,7 +183,7 @@ public class Main {
             String maara = req.queryParams("maara");
             String ohje = req.queryParams("ohje");
             
-            annosRaakaAineDao.save(new AnnosRaakaAine(raakaAineId, annosId, jarjestysnumero,
+            annosRaakaAineDao.save(new AnnosRaakaAine(raakaAineId, annosId, "placeholder", jarjestysnumero,
                     maara, ohje));
             
             res.redirect("/reseptit/");

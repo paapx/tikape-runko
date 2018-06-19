@@ -28,6 +28,13 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
         return null;
     }
     
+    @Override
+    public List<AnnosRaakaAine> findAll() throws SQLException {
+        //EI TOTEUTETTU
+        return null;
+    }
+    
+    /*
     public AnnosRaakaAine findOne(Integer annos_key, Integer raakaAine_key) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM AnnosRaakaAine WHERE annos_id = ? AND raakaAine_id = ?");
@@ -80,11 +87,16 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
 
         return annosRaakaAineet;
     }
+*/
     
     public List<RaakaAine> findAllRaakaAineInAnnos(Integer annosId) throws SQLException {
 
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT RaakaAine.id AS rId, RaakaAine.nimi AS rNimi FROM RaakaAine, AnnosRaakaAine WHERE AnnosRaakaAine.annos_id = ?");
+        Connection conn = database.getConnection();
+        PreparedStatement stmt 
+                = conn.prepareStatement("SELECT RaakaAine.id AS rId, "
+                        + "RaakaAine.nimi AS rNimi "
+                        + "FROM RaakaAine, AnnosRaakaAine "
+                        + "WHERE AnnosRaakaAine.annos_id = ?");
         stmt.setInt(1, annosId);
 
         ResultSet rs = stmt.executeQuery();
@@ -96,12 +108,41 @@ public class AnnosRaakaAineDao implements Dao<AnnosRaakaAine, Integer> {
             raakaAineet.add(new RaakaAine(rId, rNimi));
 
         }
+        return raakaAineet;
+    }
+        
+        
+    public List<AnnosRaakaAine> findAllAnnosRaakaAineForAnnos(Integer annosId) throws SQLException {
+
+        Connection conn = database.getConnection();
+        
+        PreparedStatement stmt
+                    = conn.prepareStatement("SELECT RaakaAine.nimi AS nimi, "
+                            + "AnnosRaakaAine.jarjestysnumero AS jarjestysnumero, "
+                            + "AnnosRaakaAine.maara AS maara, "
+                            + "AnnosRaakaAine.ohje AS ohje "
+                            + "FROM AnnosRaakaAine, RaakaAine "
+                            + "WHERE AnnosRaakaAine.annos_id = ? "
+                            + "AND AnnosRaakaAine.raakaAine_id = RaakaAine.id "
+                            + "ORDER BY AnnosRaakaAine.jarjestysnumero");
+        stmt.setInt(1,annosId);
+        ResultSet rs = stmt.executeQuery();
+            
+        List<AnnosRaakaAine> annosRaakaAineet = new ArrayList<>();
+            
+        while(rs.next()) {
+            String nimi = rs.getString("nimi");
+            Integer jarjestysnumero = rs.getInt("jarjestysnumero");
+            String maara = rs.getString("maara");
+            String ohje = rs.getString("ohje");
+            annosRaakaAineet.add(new AnnosRaakaAine(-1, -1, nimi, jarjestysnumero, maara, ohje));
+}
 
         rs.close();
         stmt.close();
-        connection.close();
+        conn.close();
 
-        return raakaAineet;
+        return annosRaakaAineet;
     }
     
 
