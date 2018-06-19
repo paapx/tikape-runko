@@ -7,12 +7,12 @@
     </head>
 
     <body>
-        <h1>Hei <span th:text="${raakaAine.nimi}">raakaAine</span>!</h1>
+        <h1>Raaka-aine: <span th:text="${raakaAine.nimi}">raakaAine</span>!</h1>
 
         <p>Olet saapunut raaka-aineen <span th:text="${raakaAine.nimi}">raakaAine</span> sivulle.</p>
         
         <ul>
-                <li th:each="annosRaakaAine : ${AnnosRaakaAineet}">
+                <li th:each="raakaAine : ${raakaAineet}">
                     <span th:text="${annos.nimi}">esimerkki</span>
                 </li>
         </ul>
