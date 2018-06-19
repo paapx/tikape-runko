@@ -9,12 +9,18 @@
     <body>
         <h1>Reseptiarkisto</h1>
 
-        <p> Reseptit <span th:text="${viesti}">jotain?</span></p>
-
-        <p><a href="/reseptit">Tästä reseptilistaukseen.</a></p>
+        <p> Reseptit<span th:text="${viesti}">jotain?</span></p>
         
-        <p> Toiminnot <span th:text="${viesti}">jotain?</span></p>
-
+        <ul>
+            <li th:each="annos : ${annokset}">
+                <span th:text="${annos.nimi}">esimerkki</span>
+            </li>
+        </ul>
+        
+        <p> Toiminnot<span th:text="${viesti}">jotain?</span></p>
+        
+        <p><a href="/reseptit">Luo uusi resepti.</a></p>
+        
         <p><a href="/raaka-aineet">Tarkastele ja lisää raaka-aineita.</a></p>
         
     </body>
