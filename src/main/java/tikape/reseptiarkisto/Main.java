@@ -138,6 +138,7 @@ public class Main {
 
         get("/resepti/:annosId", (req, res) -> {
             HashMap map = new HashMap<>();
+            map.put("annos", annosDao.findOne(Integer.parseInt(req.params(":annosId"))));
             map.put("raakaAineet", annosRaakaAineDao.etsiAnnoksenRaakaAineet(Integer.parseInt(req.params(":annosId"))));
 
             return new ModelAndView(map, "resepti");
