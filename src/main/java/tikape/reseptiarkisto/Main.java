@@ -167,13 +167,13 @@ public class Main {
             
             List<RaakaAine> sortedRaakaAineet = new ArrayList<>();
             
-            for(RaakaAine rAine : esiintymiskerrat.keySet()) {
+            for(RaakaAine rAine : Main.sortByValue(esiintymiskerrat).keySet()) {
                 sortedRaakaAineet.add(rAine);
             }
             
             HashMap map = new HashMap<>();
             map.put("raakaAineet", sortedRaakaAineet);
-            map.put("esiintymiskerrat", esiintymiskerrat);
+            map.put("esiintymiskerrat", Main.sortByValue(esiintymiskerrat));
 
             return new ModelAndView(map, "raaka-aineet");
         }, new ThymeleafTemplateEngine());
