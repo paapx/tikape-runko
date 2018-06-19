@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Otsikko</title>
+        <title>Reseptiarkisto</title>
         <meta charset="utf-8" />
     </head>
 
     <body>
-        <h1>Reseptiarkisto</h1>
+        <h1>Reseptiarkisto: Etusivu</h1>
 
-        <p> Reseptit<span th:text="${viesti}">jotain?</span></p>
+        <p> Reseptit:<span th:text="${viesti}">jotain?</span></p>
         
         <ul>
             <li th:each="annos : ${annokset}">
@@ -19,11 +19,9 @@
             </li>
         </ul>
         
-        <p>\n<span th:text="${viesti}">jotain?</span></p>
+        <p><a href="/reseptit">Luo uusi resepti</a></p>
         
-        <p><a href="/reseptit">Luo uusi resepti.</a></p>
-        
-        <p><a href="/raaka-aineet">Tarkastele ja lisää raaka-aineita.</a></p>
+        <p><a href="/raaka-aineet">Tarkastele ja lisää raaka-aineita</a></p>
         
     </body>
 </html>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Otsikko</title>
+        <title>Reseptiarkisto</title>
         <meta charset="utf-8" />
     </head>
 
@@ -10,5 +10,11 @@
         <h1>Hei <span th:text="${annos.nimi}">annos</span>!</h1>
 
         <p>Olet saapunut reseptin <span th:text="${annos.nimi}">resepti</span> sivulle.</p>
+        
+        <ul>
+                <li th:each="annosRaakaAine : ${AnnosRaakaAineet}">
+                    <span th:text="${raakaAine.nimi}">esimerkki</span>
+                </li>
+        </ul>
     </body>
 </html>

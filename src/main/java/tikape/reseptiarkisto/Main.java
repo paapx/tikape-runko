@@ -11,6 +11,7 @@ import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.reseptiarkisto.database.Database;
 import tikape.reseptiarkisto.database.AnnosDao;
+import tikape.reseptiarkisto.database.AnnosRaakaAineDao;
 import tikape.reseptiarkisto.database.RaakaAineDao;
 
 public class Main {
@@ -30,7 +31,6 @@ public class Main {
 
         Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("viesti", ":");
             map.put("annokset", annosDao.findAll());
             
             return new ModelAndView(map, "index");
@@ -86,13 +86,6 @@ public class Main {
         
         RaakaAineDao raakaAineDao = new RaakaAineDao(database);
 
-        get("/", (req, res) -> {
-            HashMap map = new HashMap<>();
-            map.put("viesti", ":");
-
-            return new ModelAndView(map, "index");
-        }, new ThymeleafTemplateEngine());
-
         get("/raaka-aineet", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("raakaAineet", raakaAineDao.findAll());
@@ -102,7 +95,7 @@ public class Main {
 
         get("/raaka-aineet/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("raakaAine", annosDao.findOne(Integer.parseInt(req.params("id"))));
+            map.put("raakaAine", raakaAineDao.findOne(Integer.parseInt(req.params("id"))));
 
             return new ModelAndView(map, "raakaAine");
         }, new ThymeleafTemplateEngine());
@@ -136,5 +129,58 @@ public class Main {
             res.redirect("/raaka-aineet");
             return "";
         });
+        
+        
+        
+        //ANNOSRAAKA-AINEET
+        
+        AnnosRaakaAineDao annosRaakaAineDao = new AnnosRaakaAineDao(database);
+
+        get("/resepti/:annosId/raaka-aineet", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("annosRaakaAineet", annosRaakaAineDao.findAll());
+
+            return new ModelAndView(map, "/resepti/:annosId/raaka-aineet");
+        }, new ThymeleafTemplateEngine());
+
+        get("/resepti/:annosId/raaka-aineet/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("raakaAine", annosRaakaAineDao.findOne(Integer.parseInt(req.params("id"))));
+
+            return new ModelAndView(map, "raakaAine");
+        }, new ThymeleafTemplateEngine());
+        
+        Spark.post("/resepti/:annosId/raaka-aineet", (req, res) -> {
+            System.out.println("Hei maailma!");
+            System.out.println("Saatiin: "
+                    + req.queryParams("raakaAine"));
+
+            // avaa yhteys tietokantaan
+            Connection conn = database.getConnection();
+            
+            // tee kysely
+            PreparedStatement stmt
+                    = conn.prepareStatement("INSERT INTO RaakaAine (nimi) VALUES (?)");
+            stmt.setString(1, req.queryParams("raakaAine"));
+
+            stmt.executeUpdate();
+
+            // sulje yhteys tietokantaan
+            conn.close();
+
+            res.redirect("/resepti/:annosId/raaka-aineet");
+            return "";
+        });
+        
+        /*
+        Spark.post("/resepti/:annosId/raaka-aineet/:raakaAineId/delete", (req, res) -> {
+            
+            raakaAineDao.delete(Integer.parseInt(req.params(":raakaAineId")));
+        
+            res.redirect("/resepti/:annosId/raaka-aineet");
+            return "";
+        });
+        */
+        
     }
 }
