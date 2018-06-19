@@ -19,25 +19,23 @@
         <h4>Lisää uusi resepti</h4>
   
         <form method="POST" action="">
-            Raaka-aineen nimi:<br/>
+            Reseptin nimi:<br/>
             <input type="text" name="annos"/><br/>
             <input type="submit" value="Lisää"/>
         </form>
+        
     
         <h4>Lisää raaka-aineita</h4>
 
         <form method="POST" action="">
-            Smoothien nimi:<br/>
-            <select name="smoothie">
-                <option name="2">Aurinkolasit</option>
-                <option name="1">Mustikkaplorays</option>
+            Reseptin nimi:<br/>
+            <select name="annos">
+                <option th:each="annos : ${annokset}" name="annos.nimi">esimerkki</option>
             </select>
             <br/>
             Lisättävä raaka-aine<br/>
             <select name="raakaAine">
-                <option name="1">Appelsiini</option>
-                <option name="2">Banaani</option>
-                <option name="...">...</option>
+                <option th:each="raakaAine : ${raakaAineet}" name="raakaAine.nimi">esimerkki</option>
             </select>
             <br/>
             Järjestys<br/>
